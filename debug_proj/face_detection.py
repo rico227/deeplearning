@@ -1,5 +1,6 @@
 import cv2 as cv
 import glob
+import tensorflow as tf
 import matplotlib.pyplot as plot
 from PIL import Image
 import datetime
@@ -19,15 +20,30 @@ faces = [cascade.detectMultiScale(img_gray, scaleFactor=1.3, minNeighbors=5, min
 #
 i = 0
 j = 0
+k = 0
 for img in images:
     for x, y, width, height in faces[i]:
-        cv.rectangle(img, (x, y), (x + width, y + height), color=(0, 0, 255), thickness=2)
+        cv.rectangle(img, (x, y), (x + width, y + height))
         # crop image at ROI
         crop_image = img[y:y + height, x:x + width]
-        saved = cv.imwrite(f"images/me_{j}.jpg", crop_image)
-        if saved:
-            print(f"saved to images/me_{j}.jpg")
-        j += 1
+        # show image for manual validation
+        cv.imshow('cropped image', crop_image)
+        cv.waitKey(0)
+        cv.destroyAllWindows()
+        # ask user to sort image
+        print("Press 'm' if the picture shows your face. Press 's' if the picture shows something or somebody else. "
+              "Press 'q' if you don't want to save the picture")
+        decision = input()
+        if decision == 'm':
+            saved = cv.imwrite(f"images/me/me_{j}.jpg", crop_image)
+            if saved:
+                print(f"saved to images/me/me_{j}.jpg")
+            j += 1
+        elif decision == 's':
+            saved = cv.imwrite(f"images/se/se_{k}.jpg", crop_image)
+            if saved:
+                print(f"saved to images/se/se_{k}.jpg")
+            k += 1
     i += 1
     # show images with detected faces
     # cv.imshow('image', img)
