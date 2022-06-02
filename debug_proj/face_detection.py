@@ -7,7 +7,7 @@ import datetime
 
 # get images from data path
 # img = cv.imread("test/WIN_20220521_14_05_34_Pro.jpg")
-images = [cv.imread(file) for file in glob.glob("test/*")]
+images = [cv.imread(file) for file in glob.glob(r"C:\repos\deeplearning\debug_proj\images\mePreDetection\*")]
 # convert the images to grayscale
 # img_gr = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 images_gray = [cv.cvtColor(image, cv.COLOR_BGR2GRAY) for image in images]
@@ -23,7 +23,8 @@ j = 0
 k = 0
 for img in images:
     for x, y, width, height in faces[i]:
-        cv.rectangle(img, (x, y), (x + width, y + height))
+        # print rectangle around ROI for debugging
+        #cv.rectangle(img, (x, y), (x + width, y + height), (0, 0, 255), 1)
         # crop image at ROI
         crop_image = img[y:y + height, x:x + width]
         # show image for manual validation
