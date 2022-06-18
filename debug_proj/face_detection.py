@@ -6,22 +6,19 @@ from PIL import Image
 import datetime
 
 # get images from data path
-# img = cv.imread("test/WIN_20220521_14_05_34_Pro.jpg")
-images = [cv.imread(file) for file in glob.glob(r"C:\repos\deeplearning\debug_proj\images\mePreDetection\*")]
+images = [cv.imread(file) for file in glob.glob(r"images\mePreDetection\*")]
 # convert the images to grayscale
-# img_gr = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 images_gray = [cv.cvtColor(image, cv.COLOR_BGR2GRAY) for image in images]
 # using cascade classifier for general face detection
-cascade = cv.CascadeClassifier("files/haarcascade_frontalface_default.xml")
+cascade = cv.CascadeClassifier(r"files\haarcascade_frontalface_default.xml")
 # detect faces
-# faces = cascade.detectMultiScale(img_gr, scaleFactor=1.2, minNeighbors=5, minSize=(30, 30))
 faces = [cascade.detectMultiScale(img_gray, scaleFactor=1.3, minNeighbors=5, minSize=(100, 100)) for img_gray in
          images_gray]
-#
-i = 0
+
+# loop over images list
 j = 0
 k = 0
-for img in images:
+for i, img in enumerate(images):
     for x, y, width, height in faces[i]:
         # print rectangle around ROI for debugging
         #cv.rectangle(img, (x, y), (x + width, y + height), (0, 0, 255), 1)
@@ -45,8 +42,4 @@ for img in images:
             if saved:
                 print(f"saved to images/se/se_{k}.jpg")
             k += 1
-    i += 1
-    # show images with detected faces
-    # cv.imshow('image', img)
-    # cv.waitKey(0)
-    # cv.destroyAllWindows()
+

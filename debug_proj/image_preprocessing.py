@@ -108,6 +108,11 @@ for image, _ in trainDataset.take(1):
 # to show plot with pycharm
 plt.show()
 
+# use transfer learning with tensorflow hub https://www.tensorflow.org/tutorials/images/transfer_learning_with_hub
+import tensorflow_hub as hub
+
+
+
 # use mobilenetv2 for first test
 preprocessInput = tf.keras.applications.mobilenet_v2.preprocess_input
 rescale = tf.keras.layers.Rescaling(1. / 127.5, offset=-1)
