@@ -16,8 +16,8 @@ faces = [cascade.detectMultiScale(img_gray, scaleFactor=1.3, minNeighbors=5, min
          images_gray]
 
 # loop over images list
-j = 0
-k = 0
+j = 132
+k = 107
 for i, img in enumerate(images):
     for x, y, width, height in faces[i]:
         # print rectangle around ROI for debugging
