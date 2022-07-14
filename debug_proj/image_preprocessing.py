@@ -112,15 +112,18 @@ plt.show()
 import tensorflow_hub as hub
 
 
-
-# use mobilenetv2 for first test
-preprocessInput = tf.keras.applications.mobilenet_v2.preprocess_input
+preprocessInput = tf.keras.applications.inception_resnet_v2.preprocess_input
 rescale = tf.keras.layers.Rescaling(1. / 127.5, offset=-1)
 
+# define hyperparameters
+initial_epochs = 30
+base_learning_rate = 0.0001
+
 # Create the base model from the pre-trained model MobileNet V2
-IMG_SIZE = (IMG_SIZE, IMG_SIZE)
+IMG_SIZE = (224, 224)
 IMG_SHAPE = IMG_SIZE + (3,)
-baseModel = tf.keras.applications.MobileNetV2(input_shape=IMG_SHAPE,
+print(IMG_SHAPE)
+baseModel = tf.keras.applications.InceptionResNetV2(input_shape=IMG_SHAPE,
                                               include_top=False,
                                               weights='imagenet')
 
@@ -152,7 +155,6 @@ x = tf.keras.layers.Dropout(0.2)(x)
 outputs = prediction_layer(x)
 model = tf.keras.Model(inputs, outputs)
 
-base_learning_rate = 0.0001
 model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rate),
               loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
               metrics=['accuracy'])
@@ -160,13 +162,13 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rat
 model.summary()
 
 # train model
-initial_epochs = 30
+
 
 loss0, accuracy0 = model.evaluate(validationDataset)
 print("initial loss: {:.2f}".format(loss0))
 print("initial accuracy: {:.2f}".format(accuracy0))
 
-history = model.fit(trainDataset,
+historyInceptionResNetV2 = model.fit(trainDataset,
                     epochs=initial_epochs,
                     validation_data=validationDataset)
 
